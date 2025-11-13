@@ -28,6 +28,8 @@ builder.Services.AddScoped<ClaudeImageAnalyzer>();
 builder.Services.AddScoped<IClaudeImageAnalyzer, ClaudeImageAnalyzer>();
 builder.Services.AddScoped<IClaudeVideoAnalyzer, ClaudeVideoAnalyzer>();
 builder.Services.AddScoped<IClaudeAudioAnalyzer, ClaudeAudioAnalyzer>();
+builder.Services.AddScoped<IClaudePDFAnalyzer, ClaudePDFAnalyzer>();
+builder.Services.AddScoped<IClaudeOfficeAnalyzer, ClaudeOfficeAnalyzer>();
 
 builder.Services.AddEndpointsApiExplorer();
 

@@ -8,12 +8,22 @@ public class AnalyzerController : ControllerBase
     private readonly IClaudeImageAnalyzer _imageAnalyzer;
     private readonly IClaudeVideoAnalyzer _videoAnalyzer;
     private readonly IClaudeAudioAnalyzer _audioAnalyzer;
+    private readonly IClaudePDFAnalyzer _pdfAnalyzer;
+    private readonly IClaudeOfficeAnalyzer _officeAnalyzer;
 
-    public AnalyzerController(IClaudeImageAnalyzer imageAnalyzer, IClaudeVideoAnalyzer videoAnalyzer, IClaudeAudioAnalyzer audioAnalyzer)
+    public AnalyzerController(IClaudeImageAnalyzer imageAnalyzer, 
+        IClaudeVideoAnalyzer videoAnalyzer, 
+        IClaudeAudioAnalyzer audioAnalyzer, 
+        IClaudePDFAnalyzer pdfAnalyzer,
+        IClaudeOfficeAnalyzer officeAnalyzer
+        )
     {
         _imageAnalyzer = imageAnalyzer;
         _videoAnalyzer = videoAnalyzer;
         _audioAnalyzer = audioAnalyzer;
+        _pdfAnalyzer = pdfAnalyzer;
+        _officeAnalyzer = officeAnalyzer;
+
     }
 
     [HttpPost("image")]
@@ -76,4 +86,50 @@ public class AnalyzerController : ControllerBase
         var result = await _audioAnalyzer.AnalyzeAudioAsync(filePath);
         return Ok(result);
     }
+
+    [HttpPost("file")]
+    public async Task<IActionResult> AnalyzeAnyFile([FromForm] IFormFile file, [FromForm] string prompt)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("No file uploaded.");
+
+        // Save file temporarily
+        string filePath = Path.Combine(Path.GetTempPath(), file.FileName);
+        using (var stream = new FileStream(filePath, FileMode.Create))
+            await file.CopyToAsync(stream);
+
+        // Detect file type
+        string extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        string result;
+
+        try
+        {
+            if (extension == ".pdf")
+            {
+                result = await _pdfAnalyzer.AnalyzePDFAsync(filePath, prompt);
+            }
+            else if (extension == ".doc" || extension == ".docx" ||
+                     extension == ".xls" || extension == ".xlsx" ||
+                     extension == ".ppt" || extension == ".pptx")
+            {
+                result = await _officeAnalyzer.AnalyzeOfficeDocumentAsync(filePath, prompt);
+            }
+            else
+            {
+                return BadRequest("Unsupported file type. Please upload a PDF, Word, Excel, or PowerPoint file.");
+            }
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error analyzing file: {ex.Message}");
+        }
+        finally
+        {
+            if (System.IO.File.Exists(filePath))
+                System.IO.File.Delete(filePath);
+        }
+    }
+
 }
