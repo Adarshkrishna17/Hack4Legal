@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvidenceAnalyzerApp", "EvidenceAnalyzerApp\EvidenceAnalyzerApp.csproj", "{606A1C04-6346-47E9-AB81-203D3715AA04}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EvidenceAnalyzerAppSetup", "EvidenceAnalyzerAppSetup\EvidenceAnalyzerAppSetup.vdproj", "{772BF6C4-0BE3-03D8-F17C-9C02AFCAD1AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{606A1C04-6346-47E9-AB81-203D3715AA04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{606A1C04-6346-47E9-AB81-203D3715AA04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{606A1C04-6346-47E9-AB81-203D3715AA04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{606A1C04-6346-47E9-AB81-203D3715AA04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{772BF6C4-0BE3-03D8-F17C-9C02AFCAD1AB}.Debug|Any CPU.ActiveCfg = Debug
+		{772BF6C4-0BE3-03D8-F17C-9C02AFCAD1AB}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D89110F-077D-499B-B820-10432CC4FC16}
+	EndGlobalSection
+EndGlobal
