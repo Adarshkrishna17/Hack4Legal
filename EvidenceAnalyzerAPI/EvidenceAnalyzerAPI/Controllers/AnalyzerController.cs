@@ -93,12 +93,10 @@ public class AnalyzerController : ControllerBase
         if (file == null || file.Length == 0)
             return BadRequest("No file uploaded.");
 
-        // Save file temporarily
         string filePath = Path.Combine(Path.GetTempPath(), file.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
             await file.CopyToAsync(stream);
 
-        // Detect file type
         string extension = Path.GetExtension(file.FileName).ToLowerInvariant();
         string result;
 

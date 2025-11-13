@@ -27,10 +27,10 @@ namespace EvidenceAnalyzerAPI.Services
             string bucketName = "mlcs3bucket";
             string objectKey = Path.GetFileName(audioPath);
 
-            // Upload audio file to S3
+            
             await S3Helper.UploadAsync(bucketName, objectKey, audioPath);
 
-            // Start Transcription Job
+            
             string jobName = "transcribe-" + Guid.NewGuid();
             var startReq = new StartTranscriptionJobRequest
             {
@@ -42,7 +42,7 @@ namespace EvidenceAnalyzerAPI.Services
 
             await _transcribeClient.StartTranscriptionJobAsync(startReq);
 
-            // Poll until job is done
+            
             TranscriptionJob job;
             do
             {
@@ -55,12 +55,12 @@ namespace EvidenceAnalyzerAPI.Services
             if (job.TranscriptionJobStatus != TranscriptionJobStatus.COMPLETED)
                 throw new Exception($"Transcription failed: {job.FailureReason}");
 
-            // Get the transcript text
+            
             string objectKeyJson = $"{jobName}.json";
             string transcriptText = await S3Helper.DownloadStringAsync(bucketName, objectKeyJson);
 
             
-            // Summarize using Claude
+            
             string prompt = "Summarize this audio transcription:\n" + transcriptText;
             string summary = await _claude.AnalyzeImageWithTextAsync(null, prompt);
 

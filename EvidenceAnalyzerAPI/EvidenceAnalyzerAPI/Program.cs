@@ -6,22 +6,21 @@ using EvidenceAnalyzerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton<IAmazonBedrockRuntime>(sp =>
 {
     var config = new AmazonBedrockRuntimeConfig
     {
-        RegionEndpoint = RegionEndpoint.EUWest2 // adjust your region
+        RegionEndpoint = RegionEndpoint.EUWest2 
     };
     return new AmazonBedrockRuntimeClient(config);
 });
-// Register your service
-// Register base Claude image service (used by others)
+
 builder.Services.AddScoped<ClaudeImageAnalyzer>();
 
 // Register analyzers

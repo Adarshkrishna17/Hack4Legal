@@ -33,11 +33,11 @@ namespace EvidenceAnalyzerAPI.Services
 
             try
             {
-                // 1️⃣ Upload file to S3
+                
                 string s3Key = $"uploads/{Guid.NewGuid()}_{Path.GetFileName(filePath)}";
                 await UploadFileToS3Async(filePath, s3Key);
 
-                // 2️⃣ Start Textract async job
+                
                 var startResponse = await _textractClient.StartDocumentAnalysisAsync(new StartDocumentAnalysisRequest
                 {
                     DocumentLocation = new DocumentLocation
@@ -48,13 +48,13 @@ namespace EvidenceAnalyzerAPI.Services
                             Name = s3Key
                         }
                     },
-                    FeatureTypes = new List<string> { "TABLES", "FORMS", "LAYOUT" } // can add "SIGNATURES", "QUERIES" later
+                    FeatureTypes = new List<string> { "TABLES", "FORMS", "LAYOUT" } 
                 });
 
                 string jobId = startResponse.JobId;
                 Console.WriteLine($"Textract Job started: {jobId}");
 
-                // 3️⃣ Poll for completion
+                
                 GetDocumentAnalysisResponse result;
                 do
                 {
@@ -69,7 +69,7 @@ namespace EvidenceAnalyzerAPI.Services
                 if (result.JobStatus != JobStatus.SUCCEEDED)
                     return $"Textract job failed with status: {result.JobStatus}";
 
-                // 4️⃣ Retrieve all pages
+                
                 var allBlocks = new List<Block>(result.Blocks);
                 string nextToken = result.NextToken;
 
@@ -84,7 +84,7 @@ namespace EvidenceAnalyzerAPI.Services
                     nextToken = nextResponse.NextToken;
                 }
 
-                // 5️⃣ Extract readable text + structure
+                
                 var pageTexts = allBlocks
                     .Where(b => b.BlockType == "LINE" && !string.IsNullOrWhiteSpace(b.Text))
                     .GroupBy(b => b.Page)
@@ -93,7 +93,7 @@ namespace EvidenceAnalyzerAPI.Services
 
                 string combinedText = string.Join("\n\n", pageTexts);
 
-                // 6️⃣ Send to Claude for analysis
+                
                 string prompt = $"{userPrompt}\n\nExtracted content from PDF:\n{combinedText}";
 
                 var payload = new

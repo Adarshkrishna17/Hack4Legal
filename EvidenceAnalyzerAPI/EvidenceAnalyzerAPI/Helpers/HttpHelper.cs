@@ -4,7 +4,7 @@
     {
         private static readonly HttpClient _httpClient = new HttpClient();
 
-        // Downloads a remote text file (used for transcription result)
+        
         public static async Task<string> DownloadStringAsync(string url)
         {
             var response = await _httpClient.GetAsync(url);

@@ -24,7 +24,7 @@ namespace EvidenceAnalyzerAPI.Helpers
                 string timestampFormatted = t.ToString(@"hh\:mm\:ss");
                 string framePath = Path.Combine(outputFolder, $"frame_{timestampFormatted.Replace(":", "-")}.jpg");
 
-                // Extract a single frame at this timestamp
+                
                 var args = $"-ss {timestampFormatted} -i \"{videoPath}\" -frames:v 1 \"{framePath}\" -y";
                 RunFFmpegCommand(args);
 
@@ -37,7 +37,7 @@ namespace EvidenceAnalyzerAPI.Helpers
         
         public static TimeSpan GetVideoDuration(string videoPath)
         {
-            return TimeSpan.FromMinutes(1); // Example: assume 1-minute video
+            return TimeSpan.FromMinutes(1); 
         }
 
         private static void RunFFmpegCommand(string arguments)

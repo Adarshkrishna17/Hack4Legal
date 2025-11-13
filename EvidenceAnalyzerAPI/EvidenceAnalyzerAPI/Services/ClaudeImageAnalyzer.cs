@@ -83,7 +83,7 @@ namespace EvidenceAnalyzerAPI.Services
                 using var reader = new StreamReader(response.Body);
                 var responseBody = await reader.ReadToEndAsync();
 
-                // Extract Claude's reply from JSON
+                
                 var json = JObject.Parse(responseBody);
                 var completion = json["content"]?[0]?["text"]?.ToString();
                 return completion ?? "No response text found.";
