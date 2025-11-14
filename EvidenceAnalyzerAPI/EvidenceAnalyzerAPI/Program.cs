@@ -1,5 +1,6 @@
 using Amazon;
 using Amazon.BedrockRuntime;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using EvidenceAnalyzerAPI.Interface;
 using EvidenceAnalyzerAPI.Services;
 
@@ -29,7 +30,8 @@ builder.Services.AddScoped<IClaudeVideoAnalyzer, ClaudeVideoAnalyzer>();
 builder.Services.AddScoped<IClaudeAudioAnalyzer, ClaudeAudioAnalyzer>();
 builder.Services.AddScoped<IClaudePDFAnalyzer, ClaudePDFAnalyzer>();
 builder.Services.AddScoped<IClaudeOfficeAnalyzer, ClaudeOfficeAnalyzer>();
-
+builder.Services.AddScoped<IClaudeTextAnalyzer, ClaudeTextAnalyzer>();
+builder.Services.AddScoped<IClaudeAudioAnalyzer, ClaudeAudioAnalyzer>();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
